@@ -9,7 +9,7 @@ module.exports = function (app) {
 
     app.post('/api/messages', (req, res) => {
        db.message.create(req.body).then(function (dbMessage) {
-            res.json(dbMessage);
+        res.json(dbMessage);
        });
     });
 }

@@ -1,5 +1,6 @@
-$(function () {
 
+$(function () {
+    const socket = io();
     const sendMessage = function (event) {
         event.preventDefault();
 
@@ -13,14 +14,13 @@ $(function () {
         });
         console.log(newMessage);
     };
- 
 
     $.get('api/messages')
-    .then(function (serverData) {
-        for(let i = 0; i < serverData.length; i++){
-            render(serverData[i])
-        }
-    });
+        .then(function (serverData) {
+            for (let i = 0; i < serverData.length; i++) {
+                render(serverData[i])
+            }
+        });
 
     const render = function (message) {
         $('#messages').append(`
@@ -29,6 +29,5 @@ $(function () {
     };
 
     $('#send').on('click', sendMessage);
-
 
 });
