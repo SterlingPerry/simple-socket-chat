@@ -16,9 +16,10 @@ connect.on('error', console.error.bind(console, 'connection error:'));
 connect.once('open', function() {
   // we're connected!
 });
-require('./sockets/message-socket')(io);
+
 require('./routes/api-routes')(app);
 require('./routes/html-routes')(app);
+require('./sockets/message-socket')(io);
 
 //listen to port
 server.listen(PORT, () =>{

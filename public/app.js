@@ -1,33 +1,40 @@
+const socket = io();
 
-$(function () {
-    const socket = io();
-    const sendMessage = function (event) {
-        event.preventDefault();
+   const sendMessage = function (event) {
+      event.preventDefault();
 
-        const newMessage = {
-            name: $('#name').val(),
-            message: $('#message').val()
-        }
+      const message = {
+         name: $('#name').val(),
+         message: $('#message').val()
+      };
 
-        $.post('/api/messages', newMessage).then(function (response) {
-            render(response);
-        });
-        console.log(newMessage);
-    };
+      console.log(message);
 
-    $.get('api/messages')
-        .then(function (serverData) {
-            for (let i = 0; i < serverData.length; i++) {
-                render(serverData[i])
-            }
-        });
+      $.post('/api/messages', message).then(function (response) {
+         console.log(response);
+      });
 
-    const render = function (message) {
-        $('#messages').append(`
+      socket.emit('new-message', message);
+     
+   };
+
+   socket.on('emit-message', function (data) {
+      console.log(data)
+      render(data)
+   });
+
+   $.get('api/messages')
+      .then(function (serverData) {
+         for (let i = 0; i < serverData.length; i++) {
+            render(serverData[i])
+         }
+      });
+
+   const render = function (message) {
+      $('#messages').append(`
             <h4> ${message.name}</h4>
             <p>${message.message}</p><hr>`)
-    };
+   };
 
-    $('#send').on('click', sendMessage);
+   $('#send').on('click', sendMessage);
 
-});
